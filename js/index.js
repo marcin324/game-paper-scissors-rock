@@ -10,6 +10,7 @@ var gameOutput = document.getElementById('output');
 var roundNmb = document.getElementById('roundNmb');
 var newGameButton = document.getElementById('new-game');
 var gameButtons = document.querySelectorAll('.btn');
+/*var gameButtons = document.querySelectorAll('.player-move');*/
 
 
 /* NASŁUCHIWACZE */
@@ -19,11 +20,24 @@ rockButton.addEventListener('click', function (){checkWinner('rock')});
 scissorsButton.addEventListener('click', function (){checkWinner('scissors')});
 newGameButton.addEventListener('click', newGame);
 
+/*for(var i = 0; gameButtons.length; i++){
+    var dataMove = gameButtons[i].getAttribute('data-move');
+    gameButtons[i].addEventListener('click', function(){
+        checkWinner(dataMove)
+    })
+};*/
+
 /* OBIEKTY */
 
-var player = {score: 0};
+/*var player = {score: 0};
 var computer = {score: 0};
-var roundNumber = 0;
+var roundNumber = 0;*/
+
+var params = {
+    player: {score: 0},
+    computer: {score: 0},
+    roundNumber: 0
+};
 
 function log(elem, text){
     elem.innerHTML = text + '<br><br>';
@@ -36,14 +50,14 @@ function randomChoice(){
 };
 
 function setGamePoints(){
-    log(gameResult, 'GRACZ: ' + player.score + '-' + computer.score + ' :KOMPUTER');
-    log(roundNmb, 'GRA KOŃCZY SIĘ PO ' + roundNumber + ' ZWYCIĘSKICH RUNDACH')
+    log(gameResult, 'GRACZ: ' + params.player.score + '-' + params.computer.score + ' :KOMPUTER');
+    log(roundNmb, 'GRA KOŃCZY SIĘ PO ' + params.roundNumber + ' ZWYCIĘSKICH RUNDACH')
 };
 
 
 /* ROZPOCZĘCIE GRY */
 function newGame(){
-    roundNumber = window.prompt('Podaj liczbę wygranych rund, po której kończy się gra');
+    params.roundNumber = window.prompt('Podaj liczbę wygranych rund, po której kończy się gra');
     
     for(var i = 0; i < gameButtons.length; i++){
         gameButtons[i].style.display = 'inline-block';
@@ -55,19 +69,19 @@ function newGame(){
 /* KONIEC GRY */
 
 function endOfTheGame(){
-    if (player.score == roundNumber  || computer.score == roundNumber ){
-        if (player.score == roundNumber){
+    if (params.player.score == params.roundNumber  || params.computer.score == params.roundNumber ){
+        if (params.player.score == params.roundNumber){
             setTimeout(function(){
-                alert('Wygrałeś! Koniec gry! Wynik: ' + player.score + '-' + computer.score);
-                player.score = 0;
-                computer.score = 0;
+                alert('Wygrałeś! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score);
+                params.player.score = 0;
+                params.computer.score = 0;
             }, 500)
         }
         else {
             setTimeout(function(){
-                alert('Komputer wygrał! Koniec gry! Wynik: ' + player.score + '-' + computer.score);
-                player.score = 0;
-                computer.score = 0;
+                alert('Komputer wygrał! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score);
+                params.player.score = 0;
+                params.computer.score = 0;
             }, 500)
         }
        
@@ -93,7 +107,7 @@ function checkWinner(playerPick){
         (playerPick == 'rock' && computerPick == 'scissors') ||
         (playerPick == 'scissors' && computerPick == 'paper')) {
             output += 'Wygrałeś!';
-            player.score++;
+            params.player.score++;
     }
   
     else if (playerPick == computerPick) {
@@ -102,7 +116,7 @@ function checkWinner(playerPick){
   
     else {
         output += 'Komputer wygrał!';
-        computer.score++;
+        params.computer.score++;
     }
   
     log(gameOutput, output);
