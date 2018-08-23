@@ -9,7 +9,11 @@ var gameResult = document.getElementById('result');
 var gameOutput = document.getElementById('output');
 var roundNmb = document.getElementById('roundNmb');
 var newGameButton = document.getElementById('new-game');
-var gameButtons = document.querySelectorAll('.btn');
+var gameBtns = document.querySelectorAll('.btn');
+var modal = document.querySelector('.modal');
+var modalContent = document.querySelector('.modal .content');
+var overlay = document.getElementById('modal-overlay');
+var closeButton = document.querySelector('.modal .close');
 /*var gameButtons = document.querySelectorAll('.player-move');*/
 
 
@@ -20,6 +24,12 @@ rockButton.addEventListener('click', function (){checkWinner('rock')});
 scissorsButton.addEventListener('click', function (){checkWinner('scissors')});
 newGameButton.addEventListener('click', newGame);
 
+closeButton.addEventListener('click', hideModal);
+overlay.addEventListener('click', hideModal);
+modal.addEventListener('click', function(event){
+    event.stopPropagation();
+});
+
 /*for(var i = 0; gameButtons.length; i++){
     var dataMove = gameButtons[i].getAttribute('data-move');
     gameButtons[i].addEventListener('click', function(){
@@ -29,15 +39,22 @@ newGameButton.addEventListener('click', newGame);
 
 /* OBIEKTY */
 
-/*var player = {score: 0};
-var computer = {score: 0};
-var roundNumber = 0;*/
-
 var params = {
     player: {score: 0},
     computer: {score: 0},
-    roundNumber: 0
+    roundNumber: 0,
+    progress: [],
+    round: 0
 };
+
+/*var gameScore = params.player.score + '-' + params.computer.score;
+
+var tableContent = {
+        tableRound: params.round,
+        tablePlayerPick: playerPick,
+        tableComputePick: computerPick,
+        tableScore: gameScore
+}*/
 
 function log(elem, text){
     elem.innerHTML = text + '<br><br>';
@@ -50,8 +67,11 @@ function randomChoice(){
 };
 
 function setGamePoints(){
-    log(gameResult, 'GRACZ: ' + params.player.score + '-' + params.computer.score + ' :KOMPUTER');
-    log(roundNmb, 'GRA KOŃCZY SIĘ PO ' + params.roundNumber + ' ZWYCIĘSKICH RUNDACH')
+    log(gameResult, 'GRACZ: ' + params.player.score + '-' + params.computer.score + ' :KOMPUTER')
+};
+
+function hideModal(){
+    overlay.classList.remove('show')
 };
 
 
@@ -59,27 +79,29 @@ function setGamePoints(){
 function newGame(){
     params.roundNumber = window.prompt('Podaj liczbę wygranych rund, po której kończy się gra');
     
-    for(var i = 0; i < gameButtons.length; i++){
-        gameButtons[i].style.display = 'inline-block';
+    for(var i = 0; i < gameBtns.length; i++){
+        gameBtns[i].style.display = 'inline-block';
     };
   
     newGameButton.style.display = 'none';
+
+    log(roundNmb, 'GRA KOŃCZY SIĘ PO ' + params.roundNumber + ' ZWYCIĘSKICH RUNDACH')
 };
 
 /* KONIEC GRY */
 
 function endOfTheGame(){
-    if (params.player.score == params.roundNumber  || params.computer.score == params.roundNumber ){
+    if (params.player.score == params.roundNumber || params.computer.score == params.roundNumber ){
         if (params.player.score == params.roundNumber){
             setTimeout(function(){
-                alert('Wygrałeś! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score);
+                modalContent.innerHTML = 'Wygrałeś! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score;
                 params.player.score = 0;
                 params.computer.score = 0;
             }, 500)
         }
         else {
             setTimeout(function(){
-                alert('Komputer wygrał! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score);
+                modalContent.innerHTML = 'Komputer wygrał! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score;
                 params.player.score = 0;
                 params.computer.score = 0;
             }, 500)
@@ -88,12 +110,15 @@ function endOfTheGame(){
         gameResult.innerHTML = '';
         gameOutput.innerHTML = '';
         roundNmb.innerHTML = '';
-    
-        for(var i = 0; i < gameButtons.length; i++){
-            gameButtons[i].style.display = 'none';
+        
+        
+        for(var i = 0; i < gameBtns.length; i++){
+            gameBtns[i].style.display = 'none';
         }
     
         newGameButton.style.display = 'inline-block';
+        
+        overlay.classList.add('show');
     }; 
 };
 
@@ -118,7 +143,7 @@ function checkWinner(playerPick){
         output += 'Komputer wygrał!';
         params.computer.score++;
     }
-  
+
     log(gameOutput, output);
     setGamePoints();
     endOfTheGame();
