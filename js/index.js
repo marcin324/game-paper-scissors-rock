@@ -10,18 +10,16 @@ var gameOutput = document.getElementById('output');
 var roundNmb = document.getElementById('roundNmb');
 var newGameButton = document.getElementById('new-game');
 var gameBtns = document.querySelectorAll('.btn');
+var gameButtons = document.querySelectorAll('.player-move');
 var modal = document.querySelector('.modal');
 var modalContent = document.querySelector('.modal .content');
 var overlay = document.getElementById('modal-overlay');
 var closeButton = document.querySelector('.modal .close');
-/*var gameButtons = document.querySelectorAll('.player-move');*/
+
 
 
 /* NASŁUCHIWACZE */
 
-paperButton.addEventListener('click', function (){checkWinner('paper')});
-rockButton.addEventListener('click', function (){checkWinner('rock')});
-scissorsButton.addEventListener('click', function (){checkWinner('scissors')});
 newGameButton.addEventListener('click', newGame);
 
 closeButton.addEventListener('click', hideModal);
@@ -30,12 +28,16 @@ modal.addEventListener('click', function(event){
     event.stopPropagation();
 });
 
-/*for(var i = 0; gameButtons.length; i++){
+
+/*pętla przechodząca przez wszystkie elementy z klasą 'player-move' (guziki); potem w zmiennej 'dataMove' zapisywana jest wartość atrybutu
+'data-move' za pomocą 'getAttribute'; potem guzik przypisany jest do funkcji checkWinner z argumentem dataMove, tzn. argumentem jest wartość
+atrybutu 'data-move'*/
+for(var i = 0; i < gameButtons.length; i++){
     var dataMove = gameButtons[i].getAttribute('data-move');
     gameButtons[i].addEventListener('click', function(){
         checkWinner(dataMove)
     })
-};*/
+};
 
 /* OBIEKTY */
 
@@ -43,18 +45,7 @@ var params = {
     player: {score: 0},
     computer: {score: 0},
     roundNumber: 0,
-    progress: [],
-    round: 0
 };
-
-/*var gameScore = params.player.score + '-' + params.computer.score;
-
-var tableContent = {
-        tableRound: params.round,
-        tablePlayerPick: playerPick,
-        tableComputePick: computerPick,
-        tableScore: gameScore
-}*/
 
 function log(elem, text){
     elem.innerHTML = text + '<br><br>';
@@ -94,14 +85,14 @@ function endOfTheGame(){
     if (params.player.score == params.roundNumber || params.computer.score == params.roundNumber ){
         if (params.player.score == params.roundNumber){
             setTimeout(function(){
-                modalContent.innerHTML = 'Wygrałeś! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score;
+                modalContent.innerHTML = 'Wygrałeś! Wynik: ' + params.player.score + '-' + params.computer.score;
                 params.player.score = 0;
                 params.computer.score = 0;
             }, 500)
         }
         else {
             setTimeout(function(){
-                modalContent.innerHTML = 'Komputer wygrał! Koniec gry! Wynik: ' + params.player.score + '-' + params.computer.score;
+                modalContent.innerHTML = 'Komputer wygrał! Wynik: ' + params.player.score + '-' + params.computer.score;
                 params.player.score = 0;
                 params.computer.score = 0;
             }, 500)
