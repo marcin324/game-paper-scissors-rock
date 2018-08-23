@@ -22,6 +22,7 @@ var closeButton = document.querySelector('.modal .close');
 
 newGameButton.addEventListener('click', newGame);
 
+/* Nasłuchiwacze do modala kończącego grę */
 closeButton.addEventListener('click', hideModal);
 overlay.addEventListener('click', hideModal);
 modal.addEventListener('click', function(event){
@@ -29,9 +30,9 @@ modal.addEventListener('click', function(event){
 });
 
 
-/*pętla przechodząca przez wszystkie elementy z klasą 'player-move' (guziki); potem w zmiennej 'dataMove' zapisywana jest wartość atrybutu
+/* Pętla przechodząca przez wszystkie elementy z klasą 'player-move' (guziki); potem w zmiennej 'dataMove' zapisywana jest wartość atrybutu
 'data-move' za pomocą 'getAttribute'; potem guzik przypisany jest do funkcji checkWinner z argumentem dataMove, tzn. argumentem jest wartość
-atrybutu 'data-move'*/
+atrybutu 'data-move' */
 for(var i = 0; i < gameButtons.length; i++){
     var dataMove = gameButtons[i].getAttribute('data-move');
     gameButtons[i].addEventListener('click', function(){
@@ -47,6 +48,8 @@ var params = {
     roundNumber: 0,
 };
 
+/* FUNKCJE */
+
 function log(elem, text){
     elem.innerHTML = text + '<br><br>';
 };
@@ -61,12 +64,15 @@ function setGamePoints(){
     log(gameResult, 'GRACZ: ' + params.player.score + '-' + params.computer.score + ' :KOMPUTER')
 };
 
+/*Funkcja zamykająca modal*/
+
 function hideModal(){
     overlay.classList.remove('show')
 };
 
 
 /* ROZPOCZĘCIE GRY */
+
 function newGame(){
     params.roundNumber = window.prompt('Podaj liczbę wygranych rund, po której kończy się gra');
     
@@ -109,7 +115,7 @@ function endOfTheGame(){
     
         newGameButton.style.display = 'inline-block';
         
-        overlay.classList.add('show');
+        overlay.classList.add('show'); // Po skończeniu gry pojawia sie modal
     }; 
 };
 
