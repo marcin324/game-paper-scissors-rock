@@ -23,6 +23,7 @@ var closeButton = document.querySelector('.modal .close');
 newGameButton.addEventListener('click', newGame);
 
 /* Nasłuchiwacze do modala kończącego grę */
+
 closeButton.addEventListener('click', hideModal);
 overlay.addEventListener('click', hideModal);
 modal.addEventListener('click', function(event){
@@ -33,10 +34,10 @@ modal.addEventListener('click', function(event){
 /* Pętla przechodząca przez wszystkie elementy z klasą 'player-move' (guziki); potem w zmiennej 'dataMove' zapisywana jest wartość atrybutu
 'data-move' za pomocą 'getAttribute'; potem guzik przypisany jest do funkcji checkWinner z argumentem dataMove, tzn. argumentem jest wartość
 atrybutu 'data-move' */
+
 for(var i = 0; i < gameButtons.length; i++){
-    var dataMove = gameButtons[i].getAttribute('data-move');
-    gameButtons[i].addEventListener('click', function(){
-        checkWinner(dataMove)
+    gameButtons[i].addEventListener('click', function(e){
+        checkWinner(e.target.getAttribute('data-move'))
     })
 };
 
@@ -46,6 +47,15 @@ var params = {
     player: {score: 0},
     computer: {score: 0},
     roundNumber: 0,
+    round: 0,  // Numer kolejnej rundy
+    progress: [] // Tu dodaję pustą tablicę
+};
+
+var table = {
+    tableRound: params.round,
+    tablePlayer: playerPick,
+    tableComputer: computerPick,
+    tableScore: params.player.score + ' - ' + params.computer.score
 };
 
 /* FUNKCJE */
@@ -67,7 +77,9 @@ function setGamePoints(){
 /*Funkcja zamykająca modal*/
 
 function hideModal(){
-    overlay.classList.remove('show')
+    overlay.classList.remove('show');
+    params.progress = []; // Czyszczenie tablicy
+    modalTable.innerHTML = ''; // Czyszczenie tabeli
 };
 
 
@@ -94,6 +106,7 @@ function endOfTheGame(){
                 modalContent.innerHTML = 'Wygrałeś! Wynik: ' + params.player.score + '-' + params.computer.score;
                 params.player.score = 0;
                 params.computer.score = 0;
+                params.round = 0;  // zerowanie licznika rund po skończonej grze
             }, 500)
         }
         else {
@@ -101,6 +114,7 @@ function endOfTheGame(){
                 modalContent.innerHTML = 'Komputer wygrał! Wynik: ' + params.player.score + '-' + params.computer.score;
                 params.player.score = 0;
                 params.computer.score = 0;
+                params.round = 0;  // zerowanie licznika rund po skończonej grze
             }, 500)
         }
        
@@ -116,6 +130,19 @@ function endOfTheGame(){
         newGameButton.style.display = 'inline-block';
         
         overlay.classList.add('show'); // Po skończeniu gry pojawia sie modal
+        modal.classList.add('show');
+
+        /* Dane z tablicy params.progress wstawiam do modala*/
+        
+        var resultTable = document.createElement('table');
+
+        for(var i = 0; i < params.progress.length; i++){
+        	resultTable.innerHTML += '<strong>Numer rundy: </strong>' + params.progress[i].tableRound + ', <strong>Wybór gracza: </strong>' + 
+        	params.progress[i].tablePlayer + ', <strong>Wybór komputera: </strong>' + params.progress[i].tableComputer + 
+        	', <strong>Wynik rozgrywki: </strong>' + params.progress[i].tableScore + '<br>' 
+        };
+        
+        modalTable.appendChild(resultTable);
     }; 
 };
 
@@ -130,16 +157,29 @@ function checkWinner(playerPick){
         (playerPick == 'scissors' && computerPick == 'paper')) {
             output += 'Wygrałeś!';
             params.player.score++;
+            params.round++; // Licznik kolejnej rundy
     }
   
     else if (playerPick == computerPick) {
         output += 'Remis!';
+        params.round++; // Licznik kolejnej rundy
     }
   
     else {
         output += 'Komputer wygrał!';
         params.computer.score++;
+        params.round++; // Licznik kolejnej rundy
     }
+
+    /* Obiekt z danymi do tablicy: numer kolejnej rundy, wybór gracza, wybór komputera i bieżący wynik gry */
+    var table = {
+        tableRound: params.round,
+        tablePlayer: playerPick,
+        tableComputer: computerPick,
+        tableScore: params.player.score + ' - ' + params.computer.score
+    };
+    
+    params.progress.push(table); // Obiekt 'table' wstawiany do tablicy
 
     log(gameOutput, output);
     setGamePoints();
