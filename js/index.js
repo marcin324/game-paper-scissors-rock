@@ -32,9 +32,8 @@ modal.addEventListener('click', function(event){
 });
 
 
-/* Pętla przechodząca przez wszystkie elementy z klasą 'player-move' (guziki); potem w zmiennej 'dataMove' zapisywana jest wartość atrybutu
-'data-move' za pomocą 'getAttribute'; potem guzik przypisany jest do funkcji checkWinner z argumentem dataMove, tzn. argumentem jest wartość
-atrybutu 'data-move' */
+/* Pętla przechodząca przez wszystkie elementy z klasą 'player-move' (buttony) i przywiązująca do każdego przycisku funkcję wywołującą 
+funkcję checkWinner,której argumentem jest odpowiednia wartość atrybutu 'data-move' wybrana za pomocą metody 'getAttribute' */
 
 for(var i = 0; i < gameButtons.length; i++){
     gameButtons[i].addEventListener('click', function(e){
@@ -133,7 +132,7 @@ function endOfTheGame(){
         overlay.classList.add('show'); // Po skończeniu gry pojawia sie modal
         modal.classList.add('show');
 
-        /* Dane z tablicy params.progress wstawiam do modala*/
+        /* Dane z tablicy params.progress wstawiam do modala */
         
         var resultTable = document.createElement('table');
 
@@ -173,6 +172,7 @@ function checkWinner(playerPick){
     }
 
     /* Obiekt z danymi do tablicy: numer kolejnej rundy, wybór gracza, wybór komputera i bieżący wynik gry */
+    
     var table = {
         tableRound: params.round,
         tablePlayer: playerPick,
