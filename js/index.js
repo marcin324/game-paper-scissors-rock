@@ -15,6 +15,7 @@ var modal = document.querySelector('.modal');
 var modalContent = document.querySelector('.modal .content');
 var overlay = document.getElementById('modal-overlay');
 var closeButton = document.querySelector('.modal .close');
+var modalTable = document.getElementById('modal-table');
 
 
 
