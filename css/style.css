@@ -16,12 +16,12 @@ button:hover, button:active { color: #02ac46; background-color: #fff; }
 
 .modal .close { position: absolute; right: 0; top: 0; padding: 5px; color: #000; text-decoration: none; }
 
-.modal header { margin-top: 20px; font-size: 20px; line-height: 30px; min-height: 30px; font-weight: bold; padding: 0 30px; }
+.modal header { font-size: 20px; line-height: 30px; min-height: 30px; font-weight: bold; padding: 0 30px; margin-top: 20px }
 
 .modal .content { min-height: 30px; padding: 5px 30px; }
 
-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px auto;
-    }
+ table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
