@@ -137,7 +137,7 @@ function endOfTheGame() {
 
         /* Dane z tablicy params.progress wstawiam do modala */
 
-        var resultTable = document.createElement('table');
+        /*var resultTable = document.createElement('table');
 
         for (var i = 0; i < params.progress.length; i++) {
             resultTable.innerHTML += '<strong>Numer rundy: </strong>' + params.progress[i].tableRound + ', <strong>Wybór gracza: </strong>' +
@@ -145,7 +145,7 @@ function endOfTheGame() {
                 ', <strong>Wynik rozgrywki: </strong>' + params.progress[i].tableScore + '<br>'
         };
 
-        modalTable.appendChild(resultTable);
+        modalTable.appendChild(resultTable);*/
     };
 };
 
