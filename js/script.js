@@ -91,6 +91,10 @@ function hideModal() {
 
 function newGame() {
     params.roundNumber = window.prompt('Podaj liczbę wygranych rund, po której kończy się gra');
+    if (params.roundNumber <= 0 || !params.roundNumber) {
+        alert('nieprawidłowa wartość')
+        return params.roundNumber
+    }
 
     for (var i = 0; i < gameBtns.length; i++) {
         gameBtns[i].style.display = 'inline-block';
@@ -99,6 +103,7 @@ function newGame() {
     newGameButton.style.display = 'none';
 
     log(roundNmb, 'GRA KOŃCZY SIĘ PO ' + params.roundNumber + ' ZWYCIĘSKICH RUNDACH')
+
 };
 
 /* KONIEC GRY */
@@ -134,18 +139,6 @@ function endOfTheGame() {
 
         overlay.classList.add('show'); // Po skończeniu gry pojawia sie modal
         modal.classList.add('show');
-
-        /* Dane z tablicy params.progress wstawiam do modala */
-
-        /*var resultTable = document.createElement('table');
-
-        for (var i = 0; i < params.progress.length; i++) {
-            resultTable.innerHTML += '<strong>Numer rundy: </strong>' + params.progress[i].tableRound + ', <strong>Wybór gracza: </strong>' +
-                params.progress[i].tablePlayer + ', <strong>Wybór komputera: </strong>' + params.progress[i].tableComputer +
-                ', <strong>Wynik rozgrywki: </strong>' + params.progress[i].tableScore + '<br>'
-        };
-
-        modalTable.appendChild(resultTable);*/
     };
 };
 
@@ -184,4 +177,4 @@ function checkWinner(playerPick) {
     log(gameOutput, output);
     setGamePoints();
     endOfTheGame();
-}
+};
